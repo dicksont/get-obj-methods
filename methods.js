@@ -27,11 +27,11 @@
 (function(root) {
 
   if (typeof(Array.from) == 'undefined') {
-    Array.from = require('array-from');
+    Array.from = require('array-from') || throw new Error('No suitable Array.from implementation found.')
   }
 
   function getMethodsOnObject(obj, deep) {
-    
+
     if (obj == null)
       throw new Error('Attempted to get methods on null or undefined');
 
