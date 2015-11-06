@@ -1,6 +1,6 @@
 {
   "name": "get-obj-methods",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Returns a list of methods on the object as an array",
   "main": "methods.js",
   "directories": {
