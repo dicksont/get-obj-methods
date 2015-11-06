@@ -24,37 +24,51 @@
  *
  */
 
-if (typeof(Array.from) == 'undefined') {
-  Array.from = require('array-from');
-}
+(function(root) {
 
-function getMethodsOnObject(obj, deep) {
-  if (obj == null)
-    throw new Error('Attempted to get methods on null or undefined');
+  if (typeof(Array.from) == 'undefined') {
+    Array.from = require('array-from');
+  }
 
-  if (typeof(obj) != 'object')
-    throw new Error('Attempted to get methods on a non-object');
+  function getMethodsOnObject(obj, deep) {
+    
+    if (obj == null)
+      throw new Error('Attempted to get methods on null or undefined');
 
-  if (!deep) {
-    return Object.getOwnPropertyNames(obj).filter(function(p) {
-      return typeof obj[p] == "function";
+    if (typeof(obj) != 'object')
+      throw new Error('Attempted to get methods on a non-object');
+
+    if (deep) {
+      return getMethodsOnObjectDeep(obj);
+    } else {
+      return Object.getOwnPropertyNames(obj).filter(function(p) {
+        return typeof obj[p] == "function";
+      });
+    }
+
+  }
+
+  function getMethodsOnObjectDeep(obj) {
+    var methods = [];
+
+    // obj.__proto__ != null is a better alternative to obj == Object
+
+    while (obj != null && obj.__proto__ != null) {
+      methods = methods.concat(getMethodsOnObject(obj));
+      obj = obj.__proto__;
+    }
+
+    return Array.from(new Set(methods));
+  }
+
+  if (typeof(module) != 'undefined' && module && module.exports) {
+    module.exports = getMethodsOnObject;
+  } else if (typeof define === 'function' && define.amd) {
+    define('get-obj-methods', [], function() {
+      return getMethodsOnObject;
     });
-  } else if (deep) {
-    return getMethodsOnObjectDeep(obj);
-  }
-}
-
-function getMethodsOnObjectDeep(obj, deep) {
-  var methods = [];
-
-  // obj.__proto__ != null is a better alternative to obj == Object
-
-  while (obj != null && obj.__proto__ != null) {
-    methods = methods.concat(getMethodsOnObject(obj));
-    obj = obj.__proto__;
+  } else {
+    root.getMethodsOnObject = getMethodsOnObject;
   }
 
-  return Array.from(new Set(methods));
-}
-
-module.exports = getMethodsOnObject;
+})(this)
