@@ -1,0 +1,33 @@
+{
+  "name": "get-obj-methods",
+  "version": "0.0.1",
+  "description": "Returns a list of methods on the object as an array",
+  "main": "methods.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "es6-set-eq": "^0.0.1"
+  },
+  "devDependencies": {
+    "mocha": "^2.3.3"
+  },
+  "scripts": {
+    "test": "mocha test/test_get.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dicksont/get-obj-methods.git"
+  },
+  "keywords": [
+    "get",
+    "object",
+    "methods"
+  ],
+  "author": "Dickson Tam <dicksont650@gmail.com> (http://dicksont.github.io)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dicksont/get-obj-methods/issues"
+  },
+  "homepage": "https://github.com/dicksont/get-obj-methods#readme"
+}
