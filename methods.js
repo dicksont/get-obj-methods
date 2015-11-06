@@ -24,27 +24,37 @@
  *
  */
 
+if (typeof(Array.from) == 'undefined') {
+  Array.from = require('array-from');
+}
 
-function getMethodsInObject(obj, recursive) {
+function getMethodsOnObject(obj, deep) {
+  if (obj == null)
+    throw new Error('Attempted to get methods on null or undefined');
 
-  if (!recursive) {
+  if (typeof(obj) != 'object')
+    throw new Error('Attempted to get methods on a non-object');
+
+  if (!deep) {
     return Object.getOwnPropertyNames(obj).filter(function(p) {
       return typeof obj[p] == "function";
     });
-  } else if (recursive) {
-    return getMethodsInObjectRecursive(obj);
+  } else if (deep) {
+    return getMethodsOnObjectDeep(obj);
   }
-
 }
 
-function getMethodsInObjectRecursive(obj, recursive) {
+function getMethodsOnObjectDeep(obj, deep) {
   var methods = [];
-  while (obj.__proto__ != Object) {
-    methods.push(getMethodsInObject(obj));
+
+  // obj.__proto__ != null is a better alternative to obj == Object
+
+  while (obj != null && obj.__proto__ != null) {
+    methods = methods.concat(getMethodsOnObject(obj));
     obj = obj.__proto__;
   }
 
   return Array.from(new Set(methods));
 }
 
-module.exports = getMethodsInObject;
+module.exports = getMethodsOnObject;
