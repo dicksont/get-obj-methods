@@ -26,9 +26,7 @@
 
 (function(root) {
 
-  if (typeof(Array.from) == 'undefined') {
-    Array.from = require('array-from') || throw new Error('No suitable Array.from implementation found.')
-  }
+  Array.from = Array.from || require('array-from');
 
   function getMethodsOnObject(obj, deep) {
 
