@@ -26,7 +26,16 @@
 
 (function(root) {
 
-  Array.from = Array.from || require('array-from');
+  try {
+    Array.from = Array.from || require('array-from');
+  } catch (err) {
+
+  }
+
+  if (typeof(Array.from) == 'undefined') {
+    throw new Error('No suitable Array.from implementation found.');
+  }
+
 
   function getMethodsOnObject(obj, deep) {
 
